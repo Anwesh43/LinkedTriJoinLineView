@@ -124,4 +124,48 @@ class TriJoinLineView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    data class TJLNode(var i : Int, val state : State = State()) {
+
+        private var next : TJLNode? = null
+        private var prev : TJLNode? = null
+
+        init {
+            addNeighbor()
+        }
+
+        fun addNeighbor() {
+            if (i < nodes - 1) {
+                next = TJLNode(i + 1)
+                next?.prev = this
+            }
+        }
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            canvas.drawTJLNode(i, state.scale, paint)
+            next?.draw(canvas, paint)
+        }
+
+        fun startUpdating(cb : () -> Unit) {
+            state.startUpdating(cb)
+        }
+
+        fun update(cb : (Int, Float) -> Unit) {
+            state.update {
+                cb(i, it)
+            }
+        }
+
+        fun getNext(dir : Int, cb : () -> Unit) : TJLNode {
+            var curr : TJLNode? = prev
+            if (dir == 1) {
+                curr = next
+            }
+            if (curr != null) {
+                return curr
+            }
+            cb()
+            return this 
+        }
+    }
 }
