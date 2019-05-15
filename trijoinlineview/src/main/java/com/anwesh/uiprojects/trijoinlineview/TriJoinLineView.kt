@@ -215,4 +215,13 @@ class TriJoinLineView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : TriJoinLineView {
+            val view : TriJoinLineView = TriJoinLineView(activity)
+            activity.setContentView(view)
+            return view 
+        }
+    }
 }
