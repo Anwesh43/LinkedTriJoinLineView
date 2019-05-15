@@ -192,4 +192,26 @@ class TriJoinLineView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : TriJoinLineView) {
+
+        private val animator : Animator = Animator(view)
+        private val tjl : TriJoinLine = TriJoinLine(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(backColor)
+            tjl.draw(canvas, paint)
+            animator.animate {
+                tjl.update {i, scl ->
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            tjl.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
