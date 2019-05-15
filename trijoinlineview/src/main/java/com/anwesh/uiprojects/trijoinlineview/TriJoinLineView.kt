@@ -20,6 +20,7 @@ val strokeFactor : Int = 90
 val sizeFactor : Float = 2.9f
 val foreColor : Int = Color.parseColor("#673AB7")
 val backColor : Int = Color.parseColor("#BDBDBD")
+val delay : Long = 20
 
 fun Int.inverse() : Float = 1f / this
 fun Float.scaleFactor() : Float = Math.floor(this / scDiv).toFloat()
@@ -55,7 +56,7 @@ fun Canvas.drawTJLNode(i : Int, scale : Float, paint : Paint) {
     translate(w / 2, gap * (i + 1))
     rotate(90f * sc2)
     for (j in 0..(lines - 1)) {
-        drawLineJoin(j, sc1.divideScale(j, lines), size, paint)
+        drawLineJoin(j, sc1, size, paint)
     }
     restore()
 }
@@ -104,7 +105,7 @@ class TriJoinLineView(ctx : Context) : View(ctx) {
             if (animated) {
                 cb()
                 try {
-                    Thread.sleep(50)
+                    Thread.sleep(delay)
                     view.invalidate()
                 } catch(ex : Exception) {
 
@@ -221,7 +222,7 @@ class TriJoinLineView(ctx : Context) : View(ctx) {
         fun create(activity : Activity) : TriJoinLineView {
             val view : TriJoinLineView = TriJoinLineView(activity)
             activity.setContentView(view)
-            return view 
+            return view
         }
     }
 }
